@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+    <header>
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </header>
+
+    <body>
+        <div id='root'></div>
+        <script type ="text/babel">
+            const e = React.createElement;
+
+            class LikeButton extends React.Component{
+                constructor(props){
+                    super(props);
+                    this.state = {
+                        liked : false
+                    }
+                }
+
+                render(){
+                    // JSX (JS + XML)
+                    return <button
+                            type="submit"
+                            onClick={()=> {
+                                            this.setState({ liked : true})
+                                          }
+                                    }        
+                            >{this.state.liked ? 'Liked' : 'Like'}</button>;
+                }
+
+                /*
+                아래 코드가 불편하여 코드 가독성 좋게(html 태그처럼) 개선(위)
+                render(){
+                    return e('button'
+                            ,{onClick : () => { console.log('clicked!')
+                                                this.setState({liked : true})
+                                              }
+                              ,type: 'submit'}
+                            ,this.state.liked === true ? 'Liked' : 'Like');
+
+                }
+                */
+
+            }
+        </script>
+        <script type = "text/babel">
+
+            //ReactDOM.render(<LikeButton />, document.querySelector('#root'));
+            // 클래스 단위로 LikeButton를 컴포넌트화 해두었기 때문에
+            // 아래처럼 쓰면 컴포넌트들이 다 들어가게 된다
+            // 즉, 컴포넌트화 해두었기 때문에 재사용성이 좋아지고, 유지보수에서 유리함
+
+            ReactDOM.render( <div>
+                             <LikeButton />
+                             <LikeButton />
+                             <LikeButton />
+                             <LikeButton />
+                             <LikeButton />
+                             <LikeButton />
+                             </div>
+                            ,document.querySelector('#root'));
+        </script>
+
+    </body>
+
+</html>
+
+<!-- 
+    위에서 아래로 순차적으로 진행
+    1. html 읽어들임
+    2. header 에서 react script 연결됨   
+    3. id가 root인 div가 생성됨
+    4. 코드들이 읽어지지만 메모리상 변화는 없는 것으로 파악
+       (react에서는 js 자체가 컴포넌트이기도 하지만 class를 컴포넌트로 인식하는 것이 좋겠다)
+    5. ReactDom.render(e(LikeButton), document.querySelector('#root')); 가 실행되면서
+       root div에 class LikeButton이 구현(render)됨
+    6. 결과적으로 
+        <div id='root'><button>Like</button></div>
+ -->

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+    <header>
+        <meta charset="utf-8">
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </header>
+
+    <body>
+        <div id='root'></div>
+        
+        <script type ="text/babel">
+
+        class GuGuDan extends React.Component{
+
+            constructor(props){
+                super(props);
+                this.state = {
+                    first : Math.ceil(Math.random() * 9),
+                    second : Math.ceil(Math.random() * 9),
+                    value : '',
+                    result : ''
+                }
+            }
+            
+            onSubmit = (e) => {
+                                
+                                e.preventDefault();
+                                
+                                if(parseInt(this.state.value) === this.state.first * this.state.second)
+                                {   
+                                    // 이전 state값 활용시 prevState로 아래와 같이 사용하면 된다
+                                    this.setState((prevState) => {
+                                        return{
+                                            result : '정답 ' + prevState.value,
+                                            first : Math.ceil(Math.random() * 9),
+                                            second : Math.ceil(Math.random() * 9),
+                                            value : ''
+                                        }
+                                    });
+
+                                    /*
+                                    this.setState({
+                                        result : '정답',
+                                        first : Math.ceil(Math.random() * 9),
+                                        second : Math.ceil(Math.random() * 9),
+                                        value : ''
+                                    });
+                                    */
+
+                                }else{
+                                    this.setState({
+                                        result : '오답',
+                                        // first : Math.ceil(Math.random() * 9),
+                                        // second : Math.ceil(Math.random() * 9),
+                                        value : ''
+                                    });
+                                }
+                             }
+            
+            onChange = (e) => {
+                                this.setState({value : e.target.value});
+                              }                             
+
+            render(){
+                return(
+                    // react는 큰 범위에서 div든 <> </>든 태그 하나로 감싸 주어야 한다
+                    // 그렇지 않으면 에러가 발생
+                    // 따라서 의미없지만 전체 큰 div로 감싸주고 있다
+                    <div>
+                        <div>{this.state.first} 곱하기 {this.state.second} ?</div>
+                            <form onSubmit = {this.onSubmit}>
+                            <input type = "number"
+                                   value = {this.state.value}
+                                   onChange = {this.onChange}
+                            />
+                            <button>제출</button>
+                            </form>
+                            <div>{this.state.result}</div>
+                    </div>
+                );
+            }
+            
+        }
+        </script>
+        
+        <script type = "text/babel">
+            ReactDOM.render(<GuGuDan />, document.querySelector('#root'));
+        </script>
+
+    </body>
+
+</html>
